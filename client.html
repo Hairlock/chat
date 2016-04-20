@@ -2,7 +2,21 @@
 <html>
 	<head>
 		<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-		<script type="text/javascript" src="app.js"></script>
+		<script type="text/javascript">
+			var socketio = io.connect("http://www.shorelandsrealestate.com:1337");
+
+			socketio.on("send_to_client", function(data) {
+				console.log('message received');
+				document.getElementById("chattext").innerHTML = ("<hr/>" + data['message'] + document.getElementById("chattext").innerHTML);
+			});
+
+			function send() {
+				var msg = document.getElementById("chat_input").value;
+				socketio.emit("send_to_server", { message : msg});
+				console.log('sending message', msg);
+			}
+
+		</script>
 	</head>
 	<body>
 		<input type="text" id="chat_input"/>
